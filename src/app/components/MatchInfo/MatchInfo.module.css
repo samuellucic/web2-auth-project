@@ -1,0 +1,65 @@
+.info {
+  display: flex;
+  width: 20rem;
+  border-radius: 1rem;
+  border: 1px solid green;
+  box-shadow: 0 0 1px 1px inset #b5d2af;
+}
+
+.opponents {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #65a665;
+  flex: 1;
+}
+
+.opponent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0.5rem 1rem;
+
+  border-bottom: 1px solid #65a665;
+}
+
+.opponent:last-child {
+  border-bottom: none;
+}
+
+.opponent-name {
+
+}
+
+.result-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.points {
+
+}
+
+.victory, .draw, .lose {
+  display: flex;
+}
+
+.victory svg {
+  fill: green;
+}
+
+.draw svg {
+  fill: grey;
+}
+
+.lose svg {
+  fill: red;
+}
+
+.match-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6rem;
+}
