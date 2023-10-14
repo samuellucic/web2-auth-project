@@ -1,4 +1,3 @@
-import { StandingsItemProps } from './StandingsItem';
 import {
   Paper,
   Table,
@@ -8,12 +7,15 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import useStandings from '../../hooks/competitions/useStandings';
 
 export interface StandingsProps {
-  standings: StandingsItemProps[];
+  competitionId: string;
 }
 
-const Standings = ({ standings }: StandingsProps) => {
+const Standings = ({ competitionId }: StandingsProps) => {
+  const standings = useStandings('admin', competitionId);
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
@@ -26,16 +28,17 @@ const Standings = ({ standings }: StandingsProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {standings.map((standing) => (
-            <TableRow key={standing.name}>
-              <TableCell component="th" scope="row">
-                {standing.position}
-              </TableCell>
-              <TableCell align="right">{standing.name}</TableCell>
-              <TableCell align="right">{standing.played}</TableCell>
-              <TableCell align="right">{standing.points}</TableCell>
-            </TableRow>
-          ))}
+          {standings &&
+            standings.map((standing) => (
+              <TableRow key={standing.name}>
+                <TableCell component="th" scope="row">
+                  {standing.position}
+                </TableCell>
+                <TableCell align="right">{standing.name}</TableCell>
+                <TableCell align="right">{standing.played}</TableCell>
+                <TableCell align="right">{standing.points}</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

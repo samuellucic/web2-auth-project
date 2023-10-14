@@ -146,7 +146,7 @@ const CompetitionForm = ({
       },
     };
 
-    fetch('http://localhost:3000/api/competition', {
+    fetch('http://localhost:3000/api/competitions', {
       method: 'POST',
       body: JSON.stringify(competition),
     })

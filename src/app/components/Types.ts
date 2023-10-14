@@ -5,7 +5,7 @@ export interface ScoringSystem {
 }
 
 export interface Competition {
-  id: string;
+  id?: string;
   competitionName: string;
   competitorNames: string[];
   scoringSystem: ScoringSystem;
@@ -14,7 +14,7 @@ export interface Competition {
 export type MatchType = 'upcoming' | 'finished';
 
 export interface Match {
-  id: string;
+  id?: string;
   firstOpponent: string;
   secondOpponent: string;
   status: MatchType;

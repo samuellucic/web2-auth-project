@@ -1,12 +1,20 @@
 import styles from './MatchInfo.module.css';
 import {
+  Add,
   CancelOutlined,
+  Delete,
   DoneOutline,
+  Edit,
   RemoveCircleOutline,
 } from '@mui/icons-material';
 import { Match } from '../Types';
+import { useCallback, useState } from 'react';
+import MatchForm from '../MatchForm/MatchForm';
 
-export type ResultProps = Match;
+export interface ResultProps extends Match {
+  isCreator: boolean;
+}
+
 export type ResultType = 'first' | 'draw' | 'second';
 
 const returnIconBasedOnResult = (
@@ -40,7 +48,18 @@ const MatchInfo = ({
   status,
   firstOpponentScore,
   secondOpponentScore,
+  isCreator,
 }: ResultProps) => {
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+
+  const handleOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleClose = useCallback(() => {
+    setDialogOpen(false);
+  }, []);
+
   if (status === 'upcoming') {
   }
   let result: ResultType | undefined;
@@ -56,6 +75,14 @@ const MatchInfo = ({
 
   return (
     <div className={styles.info}>
+      <MatchForm
+        firstOpponent={firstOpponent}
+        secondOpponent={secondOpponent}
+        firstOpponentScore={firstOpponentScore}
+        secondOpponentScore={secondOpponentScore}
+        dialogOpen={dialogOpen}
+        onClose={handleClose}
+      />
       <div className={styles.opponents}>
         <div className={styles.opponent}>
           <p className={styles['opponent-name']}>{firstOpponent}</p>
@@ -78,7 +105,18 @@ const MatchInfo = ({
       </div>
       <div className={styles['match-status']}>
         <p>{result ? 'Finished' : 'Upcoming'}</p>
-        {/* if admin then */}
+        {isCreator && (
+          <div className={styles.icons}>
+            {result ? (
+              <>
+                <Edit className={styles['action-icon']} onClick={handleOpen} />
+                <Delete className={styles['action-icon']} onClick={() => {}} />
+              </>
+            ) : (
+              <Add className={styles['action-icon']} onClick={handleOpen} />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -59,7 +59,19 @@
 
 .match-status {
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   align-items: center;
   justify-content: center;
   width: 6rem;
+}
+
+.icons {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.action-icon {
+  cursor: pointer;
 }
