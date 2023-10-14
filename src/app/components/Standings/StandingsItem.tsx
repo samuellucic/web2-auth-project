@@ -1,9 +1,6 @@
-export interface StandingsItemProps {
-  position: number;
-  name: string;
-  played: number;
-  points: number;
-}
+import { CompetitorInfo } from '../Types';
+
+export interface StandingsItemProps extends CompetitorInfo {}
 
 const StandingsItem = ({
   position,

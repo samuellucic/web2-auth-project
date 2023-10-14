@@ -4,17 +4,10 @@ import {
   DoneOutline,
   RemoveCircleOutline,
 } from '@mui/icons-material';
+import { Match } from '../Types';
 
-type ResultType = 'first' | 'draw' | 'second';
-type MatchType = 'upcoming' | 'finished';
-
-export type ResultProps<T = MatchType> = {
-  firstOpponent: string;
-  secondOpponent: string;
-  status: MatchType;
-  firstOpponentScore?: number;
-  secondOpponentScore?: number;
-};
+export type ResultProps = Match;
+export type ResultType = 'first' | 'draw' | 'second';
 
 const returnIconBasedOnResult = (
   opponent: 'first' | 'second',
