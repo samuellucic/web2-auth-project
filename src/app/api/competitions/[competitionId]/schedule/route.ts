@@ -3,17 +3,17 @@ import { getFinishedMatches, getUpcomingMatches } from '../../../db';
 
 export const GET = async (
   req: Request,
-  { params: { id } }: { params: { id: string } }
+  { params: { competitionId } }: { params: { competitionId: string } }
 ) => {
   const userId = 'admin'; //req.headers.get('id');
 
   const upcomingMatches: Match[] = (await getUpcomingMatches(
     userId,
-    id
+    competitionId
   )) as unknown as Match[];
   const finishedMatches: Match[] = (await getFinishedMatches(
     userId,
-    id
+    competitionId
   )) as unknown as Match[];
 
   return new Response(

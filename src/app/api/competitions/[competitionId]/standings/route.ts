@@ -8,16 +8,16 @@ import {
 
 export const GET = async (
   req: Request,
-  { params: { id } }: { params: { id: string } }
+  { params: { competitionId } }: { params: { competitionId: string } }
 ) => {
   const userId = 'admin'; //req.headers.get('id');
   const competition: Competition = (await getCompetitionById(
     userId,
-    id
+    competitionId
   )) as Competition;
   const finishedMatches: Match[] = (await getFinishedMatches(
     userId,
-    id
+    competitionId
   )) as unknown as Match[];
 
   const standings: { [key: string]: Partial<CompetitorInfo> } = {};
