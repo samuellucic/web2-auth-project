@@ -20,6 +20,13 @@ export const GET = async (
     competitionId
   )) as unknown as Match[];
 
+  if (!competition.competitionName) {
+    return new Response(undefined, {
+      status: 404,
+      statusText: `Could not find the competition for id=${competitionId}`,
+    });
+  }
+
   const standings: { [key: string]: Partial<CompetitorInfo> } = {};
   for (const competitorName of competition.competitorNames) {
     standings[competitorName] = {

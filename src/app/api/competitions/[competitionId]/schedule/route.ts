@@ -16,6 +16,12 @@ export const GET = async (
     competitionId
   )) as unknown as Match[];
 
+  if (upcomingMatches.length < 1 && finishedMatches.length < 1) {
+    return new Response(undefined, {
+      status: 404,
+      statusText: `Could not find the schedule for id=${competitionId}`,
+    });
+  }
   return new Response(
     JSON.stringify([...finishedMatches, ...upcomingMatches]),
     {

@@ -3,11 +3,13 @@ import { initializeApp } from '@firebase/app';
 import {
   addDoc,
   collection,
+  deleteField,
   doc,
   getDoc,
   getDocs,
   getFirestore,
   query,
+  updateDoc,
   where,
 } from '@firebase/firestore';
 import { Competition, Match, MatchType } from '../components/Types';
@@ -103,4 +105,51 @@ export const getFinishedMatches = async (
   competitionId: string
 ) => {
   return getMatchesBasedOnStatus(userId, competitionId, 'finished');
+};
+
+export const updateMatch = async (
+  userId: string,
+  competitionId: string,
+  matchId: string,
+  data: {
+    firstOpponentScore: number;
+    secondOpponentScore: number;
+    status: 'finished';
+  }
+) => {
+  const matchRef = doc(
+    db,
+    'users',
+    userId,
+    'competitions',
+    competitionId,
+    'matches',
+    matchId
+  );
+  if (matchRef) {
+    await updateDoc(matchRef, data);
+  }
+};
+
+export const deleteMatchResults = async (
+  userId: string,
+  competitionId: string,
+  matchId: string
+) => {
+  const matchRef = doc(
+    db,
+    'users',
+    userId,
+    'competitions',
+    competitionId,
+    'matches',
+    matchId
+  );
+  if (matchRef) {
+    await updateDoc(matchRef, {
+      firstOpponentScore: deleteField(),
+      secondOpponentScore: deleteField(),
+      status: 'upcoming',
+    });
+  }
 };
