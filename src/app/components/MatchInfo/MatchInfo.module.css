@@ -2,14 +2,14 @@
   display: flex;
   width: 20rem;
   border-radius: 1rem;
-  border: 1px solid green;
-  box-shadow: 0 0 1px 1px inset #b5d2af;
+  border: 1px solid var(--semantic-success-s-500-main);
+  box-shadow: 0 0 1px 1px inset var(--neutral-grey-g-50);
 }
 
 .opponents {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #65a665;
+  border-right: 1px solid var(--semantic-success-s-500-main);
   flex: 1;
 }
 
@@ -20,7 +20,7 @@
 
   padding: 0.5rem 1rem;
 
-  border-bottom: 1px solid #65a665;
+  border-bottom: 1px solid var(--semantic-success-s-500-main);
 }
 
 .opponent:last-child {
@@ -73,5 +73,16 @@
 }
 
 .action-icon {
+  width: 2rem;
+  height: 2rem;
   cursor: pointer;
+
+  padding: 0.3rem;
+  border-radius: 1rem;
+
+  transition: all 200ms ease-in;
+}
+
+.action-icon:hover {
+  background-color: var(--neutral-grey-g-100);
 }

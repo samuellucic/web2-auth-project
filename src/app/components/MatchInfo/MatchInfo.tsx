@@ -10,9 +10,12 @@ import {
 import { Match } from '../Types';
 import { useCallback, useState } from 'react';
 import MatchForm from '../MatchForm/MatchForm';
+import api from '../../api/api';
 
 export interface ResultProps extends Match {
+  competitionId: string;
   isCreator: boolean;
+  onUpdate?: () => void;
 }
 
 export type ResultType = 'first' | 'draw' | 'second';
@@ -43,22 +46,31 @@ const returnIconBasedOnResult = (
 };
 
 const MatchInfo = ({
+  id,
+  competitionId,
   firstOpponent,
   secondOpponent,
   status,
   firstOpponentScore,
   secondOpponentScore,
   isCreator,
+  onUpdate,
 }: ResultProps) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     setDialogOpen(true);
-  };
+  }, []);
 
   const handleClose = useCallback(() => {
     setDialogOpen(false);
   }, []);
+
+  const handleDelete = useCallback(() => {
+    api.patch(`/competitions/${competitionId}/matches/${id!}`).then((res) => {
+      onUpdate?.();
+    });
+  }, [competitionId, id, onUpdate]);
 
   if (status === 'upcoming') {
   }
@@ -76,11 +88,14 @@ const MatchInfo = ({
   return (
     <div className={styles.info}>
       <MatchForm
+        matchId={id!}
+        competitionId={competitionId}
         firstOpponent={firstOpponent}
         secondOpponent={secondOpponent}
         firstOpponentScore={firstOpponentScore}
         secondOpponentScore={secondOpponentScore}
         dialogOpen={dialogOpen}
+        onUpdate={onUpdate}
         onClose={handleClose}
       />
       <div className={styles.opponents}>
@@ -110,7 +125,10 @@ const MatchInfo = ({
             {result ? (
               <>
                 <Edit className={styles['action-icon']} onClick={handleOpen} />
-                <Delete className={styles['action-icon']} onClick={() => {}} />
+                <Delete
+                  className={styles['action-icon']}
+                  onClick={handleDelete}
+                />
               </>
             ) : (
               <Add className={styles['action-icon']} onClick={handleOpen} />
