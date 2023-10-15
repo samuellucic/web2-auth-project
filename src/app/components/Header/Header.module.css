@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  border-bottom: 1px solid var(--semantic-success-s-500-main);
+}
+
+.nav {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home {
+  padding: 1rem 2rem;
+}
+
+.logout {
+  padding: 1rem 2rem;
+}
