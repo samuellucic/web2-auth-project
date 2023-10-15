@@ -7,15 +7,13 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import useStandings from '../../hooks/competitions/useStandings';
+import { CompetitorInfo } from '../Types';
 
 export interface StandingsProps {
-  competitionId: string;
+  standings: CompetitorInfo[];
 }
 
-const Standings = ({ competitionId }: StandingsProps) => {
-  const standings = useStandings('admin', competitionId);
-
+const Standings = ({ standings }: StandingsProps) => {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
@@ -29,14 +27,14 @@ const Standings = ({ competitionId }: StandingsProps) => {
         </TableHead>
         <TableBody>
           {standings &&
-            standings.map((standing) => (
-              <TableRow key={standing.name}>
+            standings.map((competitor) => (
+              <TableRow key={competitor.name}>
                 <TableCell component="th" scope="row">
-                  {standing.position}
+                  {competitor.position}
                 </TableCell>
-                <TableCell align="right">{standing.name}</TableCell>
-                <TableCell align="right">{standing.played}</TableCell>
-                <TableCell align="right">{standing.points}</TableCell>
+                <TableCell align="right">{competitor.name}</TableCell>
+                <TableCell align="right">{competitor.played}</TableCell>
+                <TableCell align="right">{competitor.points}</TableCell>
               </TableRow>
             ))}
         </TableBody>

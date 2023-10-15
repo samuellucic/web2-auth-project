@@ -1,6 +1,6 @@
 .header {
   display: flex;
-  border-bottom: 1px solid var(--semantic-success-s-500-main);
+  border-bottom: 1px solid var(--green-main);
 }
 
 .nav {

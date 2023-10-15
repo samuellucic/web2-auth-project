@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  border-bottom: 1px solid var(--blue-green-2);
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 2rem;
+
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 1rem;
+  margin-left: 1rem;
+
+  transition: background-color 200ms ease-in;
+}
+
+.icon:hover {
+  background-color: #808080;
+}
+
+.tabs {
+  padding-left: 2rem;
+}
+
+.competition {
+  display: flex;
+  flex-direction: column;
+}
