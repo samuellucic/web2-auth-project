@@ -10,6 +10,7 @@ interface CompetitionFormProps {
   initialCompetitionName?: string;
   initialCompetitorNames?: string;
   initialScoringSystem?: string;
+  onSubmit?: () => void;
 }
 
 const validateCompetitionName = (value: string): FormInputError => {
@@ -103,6 +104,7 @@ const CompetitionForm = ({
   initialCompetitionName = '',
   initialCompetitorNames = '',
   initialScoringSystem = '',
+  onSubmit,
 }: CompetitionFormProps) => {
   const [competitionName, onCompetitionNameChange, competitionNameError] =
     useFormInput({
@@ -149,11 +151,7 @@ const CompetitionForm = ({
     fetch('http://localhost:3000/api/competitions', {
       method: 'POST',
       body: JSON.stringify(competition),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log('RES', data);
-      });
+    }).then(() => onSubmit?.());
   };
 
   return (
