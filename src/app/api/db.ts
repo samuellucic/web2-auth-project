@@ -18,12 +18,8 @@ const firebaseApp = initializeApp(serviceAccount);
 
 export const db = getFirestore(firebaseApp);
 
-export const addUser = async (userData: any) => {
-  return await addDoc(collection(db, 'users'), userData);
-};
-
-export const getCompetitionsByUserId = async (userId: string) => {
-  const q = query(collection(db, 'users', userId, 'competitions'));
+export const getCompetitionsByUserId = async (username: string) => {
+  const q = query(collection(db, 'users', username, 'competitions'));
 
   const results = await getDocs(q);
   return results.docs.map((doc) => {
@@ -35,21 +31,21 @@ export const getCompetitionsByUserId = async (userId: string) => {
 };
 
 export const getCompetitionById = async (
-  userId: string,
+  username: string,
   competitionId: string
 ) => {
-  const docRef = doc(db, 'users', userId, 'competitions', competitionId);
+  const docRef = doc(db, 'users', username, 'competitions', competitionId);
   const docSnap = await getDoc(docRef);
   return { ...docSnap.data() };
 };
 
 export const addCompetition = async (
-  userId: string,
+  username: string,
   competitionData: Competition,
   schedule: [string, string][][]
 ) => {
   const competitionDocRef = await addDoc(
-    collection(db, 'users', userId, 'competitions'),
+    collection(db, 'users', username, 'competitions'),
     competitionData
   );
 
@@ -65,7 +61,7 @@ export const addCompetition = async (
         collection(
           db,
           'users',
-          userId,
+          username,
           'competitions',
           competitionDocRef.id,
           'matches'
@@ -77,12 +73,12 @@ export const addCompetition = async (
 };
 
 const getMatchesBasedOnStatus = async (
-  userId: string,
+  username: string,
   competitionId: string,
   status: MatchType
 ) => {
   const q = query(
-    collection(db, 'users', userId, 'competitions', competitionId, 'matches'),
+    collection(db, 'users', username, 'competitions', competitionId, 'matches'),
     where('status', '==', status)
   );
 
@@ -94,21 +90,21 @@ const getMatchesBasedOnStatus = async (
 };
 
 export const getUpcomingMatches = async (
-  userId: string,
+  username: string,
   competitionId: string
 ) => {
-  return getMatchesBasedOnStatus(userId, competitionId, 'upcoming');
+  return getMatchesBasedOnStatus(username, competitionId, 'upcoming');
 };
 
 export const getFinishedMatches = async (
-  userId: string,
+  username: string,
   competitionId: string
 ) => {
-  return getMatchesBasedOnStatus(userId, competitionId, 'finished');
+  return getMatchesBasedOnStatus(username, competitionId, 'finished');
 };
 
 export const updateMatch = async (
-  userId: string,
+  username: string,
   competitionId: string,
   matchId: string,
   data: {
@@ -120,36 +116,39 @@ export const updateMatch = async (
   const matchRef = doc(
     db,
     'users',
-    userId,
+    username,
     'competitions',
     competitionId,
     'matches',
     matchId
   );
-  if (matchRef) {
+  try {
     await updateDoc(matchRef, data);
+  } catch (error) {
+    return false;
   }
+  return true;
 };
 
 export const deleteMatchResults = async (
-  userId: string,
+  username: string,
   competitionId: string,
   matchId: string
 ) => {
   const matchRef = doc(
     db,
     'users',
-    userId,
+    username,
     'competitions',
     competitionId,
     'matches',
     matchId
   );
-  if (matchRef) {
+  try {
     await updateDoc(matchRef, {
       firstOpponentScore: deleteField(),
       secondOpponentScore: deleteField(),
       status: 'upcoming',
     });
-  }
+  } catch {}
 };

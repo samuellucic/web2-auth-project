@@ -1,22 +1,23 @@
-import { getCompetitionById, getFinishedMatches } from '../../../db';
+import { getCompetitionById, getFinishedMatches } from '../../../../../db';
 import {
   Competition,
   CompetitorInfo,
   Match,
   ScoringSystem,
-} from '../../../../components/Types';
+} from '../../../../../../components/Types';
 
 export const GET = async (
   req: Request,
-  { params: { competitionId } }: { params: { competitionId: string } }
+  {
+    params: { username, competitionId },
+  }: { params: { username: string; competitionId: string } }
 ) => {
-  const userId = 'admin'; //req.headers.get('id');
   const competition: Competition = (await getCompetitionById(
-    userId,
+    username,
     competitionId
   )) as Competition;
   const finishedMatches: Match[] = (await getFinishedMatches(
-    userId,
+    username,
     competitionId
   )) as unknown as Match[];
 

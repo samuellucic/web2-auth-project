@@ -1,18 +1,18 @@
-import { Match } from '../../../../components/Types';
-import { getFinishedMatches, getUpcomingMatches } from '../../../db';
+import { Match } from '../../../../../../components/Types';
+import { getFinishedMatches, getUpcomingMatches } from '../../../../../db';
 
 export const GET = async (
   req: Request,
-  { params: { competitionId } }: { params: { competitionId: string } }
+  {
+    params: { username, competitionId },
+  }: { params: { username: string; competitionId: string } }
 ) => {
-  const userId = 'admin'; //req.headers.get('id');
-
   const upcomingMatches: Match[] = (await getUpcomingMatches(
-    userId,
+    username,
     competitionId
   )) as unknown as Match[];
   const finishedMatches: Match[] = (await getFinishedMatches(
-    userId,
+    username,
     competitionId
   )) as unknown as Match[];
 
