@@ -10,12 +10,13 @@ import {
 import { Match } from '../Types';
 import { useCallback, useState } from 'react';
 import MatchForm from '../MatchForm/MatchForm';
-import api from '../../api/api';
+import useMatchState from '../../hooks/competitions/match/useMatchState';
 
 export interface ResultProps extends Match {
+  username: string;
   competitionId: string;
   isCreator: boolean;
-  onUpdate?: () => void;
+  onUpdateCallback?: () => void;
 }
 
 export type ResultType = 'first' | 'draw' | 'second';
@@ -47,6 +48,7 @@ const returnIconBasedOnResult = (
 
 const MatchInfo = ({
   id,
+  username,
   competitionId,
   firstOpponent,
   secondOpponent,
@@ -54,9 +56,17 @@ const MatchInfo = ({
   firstOpponentScore,
   secondOpponentScore,
   isCreator,
-  onUpdate,
+  onUpdateCallback,
 }: ResultProps) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const { onUpdate, onDelete } = useMatchState({
+    firstScoreInitial: firstOpponentScore,
+    secondScoreInitial: secondOpponentScore,
+    username,
+    competitionId,
+    matchId: id!,
+    onUpdateCallback,
+  });
 
   const handleOpen = useCallback(() => {
     setDialogOpen(true);
@@ -65,12 +75,6 @@ const MatchInfo = ({
   const handleClose = useCallback(() => {
     setDialogOpen(false);
   }, []);
-
-  const handleDelete = useCallback(() => {
-    api.patch(`/competitions/${competitionId}/matches/${id!}`).then((res) => {
-      onUpdate?.();
-    });
-  }, [competitionId, id, onUpdate]);
 
   if (status === 'upcoming') {
   }
@@ -125,10 +129,7 @@ const MatchInfo = ({
             {result ? (
               <>
                 <Edit className={styles['action-icon']} onClick={handleOpen} />
-                <Delete
-                  className={styles['action-icon']}
-                  onClick={handleDelete}
-                />
+                <Delete className={styles['action-icon']} onClick={onDelete} />
               </>
             ) : (
               <Add className={styles['action-icon']} onClick={handleOpen} />

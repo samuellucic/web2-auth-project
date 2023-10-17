@@ -7,7 +7,11 @@ import {
   TextField,
 } from '@mui/material';
 import useFormInput, { FormInputError } from '../../hooks/useFormInput';
-import api from '../../api/api';
+
+export interface MatchFormInput {
+  firstOpponentScore: number;
+  secondOpponentScore: number;
+}
 
 export interface MatchFormProps {
   matchId: string;
@@ -18,7 +22,7 @@ export interface MatchFormProps {
   secondOpponentScore?: number;
   dialogOpen: boolean;
   onClose: () => void;
-  onUpdate?: () => void;
+  onUpdate?: (formInput: MatchFormInput) => void;
 }
 
 const validate = (value: string): FormInputError => {
@@ -69,22 +73,10 @@ const MatchForm = ({
       return;
     }
 
-    if (
-      firstScoreInitial !== firstScore ||
-      secondScoreInitial !== secondScore
-    ) {
-      api
-        .post(`/competitions/${competitionId}/matches/${matchId}`, {
-          firstOpponentScore: firstScore,
-          secondOpponentScore: secondScore,
-          status: 'finished',
-        })
-        .then((res) => {
-          onUpdate?.();
-          console.log('do sth');
-        });
-    }
-
+    onUpdate?.({
+      firstOpponentScore: parseInt(firstScore),
+      secondOpponentScore: parseInt(secondScore),
+    });
     handleClose();
   };
 
