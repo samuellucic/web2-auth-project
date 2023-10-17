@@ -1,12 +1,12 @@
 'use client';
 
-import CompetitionForm from '../../components/CompetitionForm/CompetitionForm';
+import CompetitionForm from '../../../components/CompetitionForm/CompetitionForm';
 import styles from './page.module.css';
-import Header from '../../components/Header/Header';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
-const NewCompetition = () => {
+const NewCompetition = withPageAuthRequired(() => {
   const router = useRouter();
 
   const handleSubmit = useCallback(() => {
@@ -15,7 +15,6 @@ const NewCompetition = () => {
 
   return (
     <>
-      <Header />
       <main className={styles.container}>
         <section className={styles['form-container']}>
           <CompetitionForm onSubmit={handleSubmit} />
@@ -23,6 +22,6 @@ const NewCompetition = () => {
       </main>
     </>
   );
-};
+});
 
 export default NewCompetition;
