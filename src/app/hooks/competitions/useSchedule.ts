@@ -4,7 +4,7 @@ import api from '../../api/api';
 import useForceUpdate from '../useForceUpdate';
 
 const useSchedule = (
-  userId: string,
+  username: string,
   competitionId: string
 ): [Match[] | undefined, () => void] => {
   const [schedule, setSchedule] = useState<Match[]>();
@@ -12,13 +12,13 @@ const useSchedule = (
 
   useEffect(() => {
     api
-      .get(`/competitions/${competitionId}/schedule`)
+      .get(`/users/${username}/competitions/${competitionId}/schedule`)
       .then((res) => res.data)
       .then((data) => {
         setSchedule(data);
         console.log(data);
       });
-  }, [userId, competitionId, toggle]);
+  }, [username, competitionId, toggle]);
 
   return [schedule, forceUpdate];
 };

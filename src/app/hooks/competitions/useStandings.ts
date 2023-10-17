@@ -1,10 +1,10 @@
-import {CompetitorInfo} from '../../components/Types';
-import {useEffect, useState} from 'react';
+import { CompetitorInfo } from '../../components/Types';
+import { useEffect, useState } from 'react';
 import api from '../../api/api';
 import useForceUpdate from '../useForceUpdate';
 
 const useStandings = (
-  userId: string,
+  username: string,
   competitionId: string
 ): [CompetitorInfo[] | undefined, () => void] => {
   const [standings, setStandings] = useState<CompetitorInfo[]>();
@@ -12,13 +12,13 @@ const useStandings = (
 
   useEffect(() => {
     api
-      .get(`/competitions/${competitionId}/standings`)
+      .get(`/users/${username}/competitions/${competitionId}/standings`)
       .then((res) => res.data)
       .then((data) => {
         setStandings(data);
         console.log(data);
       });
-  }, [userId, competitionId, toggle]);
+  }, [username, competitionId, toggle]);
 
   return [standings, forceUpdate];
 };
