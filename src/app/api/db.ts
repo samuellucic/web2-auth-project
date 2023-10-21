@@ -1,4 +1,4 @@
-import serviceAccount from '../../../serviceAccountKey.json';
+import serviceAccount from '../../../serviceAccountKey';
 import { initializeApp } from '@firebase/app';
 import {
   addDoc,
