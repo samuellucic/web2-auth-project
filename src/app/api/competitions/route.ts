@@ -23,8 +23,6 @@ export const GET = async (req: Request) => {
 };
 
 export const POST = async (req: Request) => {
-  const competition = await req.json();
-  const schedule = bergman(competition.competitorNames);
   const session = await getSession();
   if (!session) {
     return new Response(null, {
@@ -33,6 +31,8 @@ export const POST = async (req: Request) => {
     });
   }
 
+  const competition = await req.json();
+  const schedule = bergman(competition.competitorNames);
   await addCompetition(session?.user.nickname, competition, schedule);
 
   return new Response(JSON.stringify(schedule), {

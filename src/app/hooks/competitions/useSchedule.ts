@@ -6,8 +6,8 @@ import useForceUpdate from '../useForceUpdate';
 const useSchedule = (
   username: string,
   competitionId: string
-): [Match[] | undefined, () => void] => {
-  const [schedule, setSchedule] = useState<Match[]>();
+): [Match[][] | undefined, () => void] => {
+  const [schedule, setSchedule] = useState<Match[][]>();
   const [toggle, forceUpdate] = useForceUpdate();
 
   useEffect(() => {

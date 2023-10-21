@@ -1,4 +1,4 @@
-import { getCompetitionById, getFinishedMatches } from '../../../../../db';
+import { getCompetitionById, getMatches } from '../../../../../db';
 import {
   Competition,
   CompetitorInfo,
@@ -16,9 +16,10 @@ export const GET = async (
     username,
     competitionId
   )) as Competition;
-  const finishedMatches: Match[] = (await getFinishedMatches(
+  const finishedMatches: Match[] = (await getMatches(
     username,
-    competitionId
+    competitionId,
+    'finished'
   )) as unknown as Match[];
 
   if (!competition.competitionName) {

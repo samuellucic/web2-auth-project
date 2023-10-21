@@ -49,12 +49,14 @@ export const addCompetition = async (
     competitionData
   );
 
-  for (const round of schedule) {
+  for (let i = 0; i < schedule.length; i++) {
+    const round = schedule[i];
     for (const match of round) {
       const matchData: Match = {
         firstOpponent: match[0],
         secondOpponent: match[1],
         status: 'upcoming',
+        round: i + 1,
       };
 
       await addDoc(
@@ -72,35 +74,39 @@ export const addCompetition = async (
   }
 };
 
-const getMatchesBasedOnStatus = async (
+export const getMatches = async (
   username: string,
   competitionId: string,
-  status: MatchType
+  status?: MatchType
 ) => {
-  const q = query(
-    collection(db, 'users', username, 'competitions', competitionId, 'matches'),
-    where('status', '==', status)
-  );
+  const q = status
+    ? query(
+        collection(
+          db,
+          'users',
+          username,
+          'competitions',
+          competitionId,
+          'matches'
+        ),
+        where('status', '==', status)
+      )
+    : query(
+        collection(
+          db,
+          'users',
+          username,
+          'competitions',
+          competitionId,
+          'matches'
+        )
+      );
 
   const results = await getDocs(q);
   return results.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
-};
-
-export const getUpcomingMatches = async (
-  username: string,
-  competitionId: string
-) => {
-  return getMatchesBasedOnStatus(username, competitionId, 'upcoming');
-};
-
-export const getFinishedMatches = async (
-  username: string,
-  competitionId: string
-) => {
-  return getMatchesBasedOnStatus(username, competitionId, 'finished');
 };
 
 export const updateMatch = async (

@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 
 export interface ScheduleProps {
   competitionId: string;
-  schedule: Match[];
+  schedule: Match[][];
   onUpdate?: () => void;
 }
 
@@ -18,16 +18,23 @@ const Schedule = ({ competitionId, schedule, onUpdate }: ScheduleProps) => {
   return (
     <div className={styles.container}>
       {schedule &&
-        schedule.map((match) => {
+        schedule.map((round: Match[], index) => {
           return (
-            <MatchInfo
-              username={username}
-              competitionId={competitionId}
-              key={match.id}
-              {...match}
-              isCreator={isCreator}
-              onUpdateCallback={onUpdate}
-            />
+            <div key={index} className={styles.round}>
+              <h4>Round {index + 1}</h4>
+              <div className={styles.matches}>
+                {round.map((match: Match) => (
+                  <MatchInfo
+                    username={username}
+                    competitionId={competitionId}
+                    key={match.id}
+                    {...match}
+                    isCreator={isCreator}
+                    onUpdateCallback={onUpdate}
+                  />
+                ))}
+              </div>
+            </div>
           );
         })}
     </div>

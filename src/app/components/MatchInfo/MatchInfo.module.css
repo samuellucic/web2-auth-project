@@ -1,5 +1,6 @@
 .info {
   display: flex;
+  align-items: center;
   width: 20rem;
   border-radius: 1rem;
   border: 1px solid var(--green-main);

@@ -20,6 +20,7 @@ export interface Match {
   status: MatchType;
   firstOpponentScore?: number;
   secondOpponentScore?: number;
+  round: number;
 }
 
 export interface CompetitorInfo {

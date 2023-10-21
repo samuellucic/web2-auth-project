@@ -1,5 +1,5 @@
 import { Match } from '../../../../../../components/Types';
-import { getFinishedMatches, getUpcomingMatches } from '../../../../../db';
+import { getMatches } from '../../../../../db';
 
 export const GET = async (
   req: Request,
@@ -7,26 +7,28 @@ export const GET = async (
     params: { username, competitionId },
   }: { params: { username: string; competitionId: string } }
 ) => {
-  const upcomingMatches: Match[] = (await getUpcomingMatches(
-    username,
-    competitionId
-  )) as unknown as Match[];
-  const finishedMatches: Match[] = (await getFinishedMatches(
+  const matches: Match[] = (await getMatches(
     username,
     competitionId
   )) as unknown as Match[];
 
-  if (upcomingMatches.length < 1 && finishedMatches.length < 1) {
+  if (matches.length < 1) {
     return new Response(undefined, {
       status: 404,
       statusText: `Could not find the schedule for id=${competitionId}`,
     });
   }
-  return new Response(
-    JSON.stringify([...finishedMatches, ...upcomingMatches]),
-    {
-      headers: { 'Content-Type': 'application/json' },
-      status: 200,
+
+  const matchesByRound: Match[][] = [];
+  for (const match of matches) {
+    const roundIndex = match.round - 1;
+    if (!matchesByRound[roundIndex]) {
+      matchesByRound[roundIndex] = [];
     }
-  );
+    matchesByRound[roundIndex].push(match);
+  }
+  return new Response(JSON.stringify(matchesByRound), {
+    headers: { 'Content-Type': 'application/json' },
+    status: 200,
+  });
 };
