@@ -16,7 +16,9 @@ const useStandings = (
       .then((res) => res.data)
       .then((data) => {
         setStandings(data);
-        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, [username, competitionId, toggle]);
 

@@ -36,7 +36,7 @@ const useMatchState = ({
               status: 'finished',
             }
           )
-          .then((res) => {
+          .then(() => {
             onUpdateCallback?.();
           })
           .catch((err) => {
@@ -58,8 +58,11 @@ const useMatchState = ({
       .delete(
         `/users/${username}/competitions/${competitionId}/matches/${matchId}`
       )
-      .then((res) => {
+      .then(() => {
         onUpdateCallback?.();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, [username, competitionId, matchId, onUpdateCallback]);
 

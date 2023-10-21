@@ -16,7 +16,9 @@ const useSchedule = (
       .then((res) => res.data)
       .then((data) => {
         setSchedule(data);
-        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, [username, competitionId, toggle]);
 

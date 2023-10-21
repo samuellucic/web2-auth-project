@@ -5,6 +5,7 @@ import { FormEvent } from 'react';
 import useFormInput, { FormInputError } from '../../hooks/useFormInput';
 import { Button, TextField } from '@mui/material';
 import { Competition } from '../Types';
+import api from '../../api/api';
 
 interface CompetitionFormProps {
   initialCompetitionName?: string;
@@ -148,10 +149,12 @@ const CompetitionForm = ({
       },
     };
 
-    fetch('https://localhost:3000/api/competitions', {
-      method: 'POST',
-      body: JSON.stringify(competition),
-    }).then(() => onSubmit?.());
+    api
+      .post('/competitions', competition)
+      .then(() => onSubmit?.())
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

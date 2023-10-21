@@ -11,7 +11,9 @@ const useCompetitions = (userId: string) => {
       .then((res) => res.data)
       .then((data) => {
         setCompetitions(data);
-        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, [userId]);
 
